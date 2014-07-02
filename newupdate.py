@@ -69,4 +69,4 @@ while True:
         print("+++++++++++++++++++++++++++++++++++++++++++++++++")
     except:
         print("whoopsie");
-    time.sleep(5)
+    time.sleep(30)
