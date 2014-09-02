@@ -4,11 +4,6 @@ import numpy as np
 
 position_url = "http://linz.faehrt.at/get_positions.php?bbox=13%2C47%2C15%2C49"
 
-r = urllib.urlopen(position_url)
-data = json.loads(r.read())
-
-led_data = ["000"]*50
-
 with open("station-led-mapping.json", "r") as f:
     stations = json.loads(f.read())
 
@@ -35,6 +30,10 @@ def sumStates(a, b):
     return c
 
 def buildData():
+    r = urllib.urlopen(position_url)
+    data = json.loads(r.read())
+    led_data = ["000"]*50
+
     for f in data['features']:
         n = getNextStation(f)
         i = n['led']

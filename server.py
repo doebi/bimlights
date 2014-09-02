@@ -1,6 +1,8 @@
 from flask import Flask
 import lf
 
+app = Flask(__name__)
+
 @app.route("/")
 def hello():
     return lf.buildData()
