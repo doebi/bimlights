@@ -13,15 +13,21 @@ def distance(a, b):
     return float(np.sqrt(x**2 + y**2))
 
 def getNextStation(f):
-    m = 100
+    m1 = 100
+    m2 = 100
     for s in stations['stations']:
         s_loc = s['coordinates']
         f_loc = f['geometry']['coordinates']
         d = distance(s_loc, f_loc)
-        if d < m:
-            m = d
-            n = s
-    return n
+        if d < m2:
+            m2 = d
+            n2 = s
+            if d < m1:
+                m1 = d
+                m2 = m1
+                n1 = s
+                n2 = n1
+    return (n1, n2)
 
 def sumStates(a, b):
     c = ""
@@ -48,6 +54,39 @@ def buildData():
         else:
             state = "000"
         led_data[i] = sumStates(d, state)
+
+    dump = ""
+    for l in led_data:
+        dump += l
+    return dump
+
+
+def debug():
+    r = urllib.urlopen(position_url)
+    data = json.loads(r.read())
+
+    for f in data['features']:
+        n = getNextStation(f)
+
+        print "bim:"
+        print f
+        print "station:"
+        print n
+        """
+        i = n['led']
+        d = led_data[i]
+        lfid = f['properties']['lfid']
+        if lfid in [1, 2]:
+            state = "100"
+        elif lfid in [3, 4]:
+            state = "010"
+        elif lfid in [5, 6]:
+            state = "001"
+        else:
+            state = "000"
+        led_data[i] = sumStates(d, state)
+        """
+        raw_input()
 
     dump = ""
     for l in led_data:
